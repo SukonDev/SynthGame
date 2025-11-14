@@ -1,1 +1,373 @@
+<!doctype html>
+<html lang="th">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Synth Studio</title>
+  <meta name="description" content="Synth Studio — บริการให้ เช่า  Launcher San Andreas Multiplayer Mobile" />
+  <meta name="theme-color" content="#07080a" />
 
+  <style>
+    :root{
+      --bg-0: #07080a;       /* very dark */
+      --bg-1: #0f1316;       /* dark panel */
+      --card: #0d1114;
+      --muted: #9aa6b2;
+      --accent: #0269f7;     /* action blue */
+      --accent-2: #91befa;   /* warm blue */
+      --glass: rgba(255,255,255,0.04);
+      --glow: 0 8px 30px rgba(255,59,48,0.12);
+      --shadow-dark: 0 10px 30px rgba(0,0,0,0.6);
+      --radius: 14px;
+      --max-width: 1200px;
+    }
+
+    /* Reset + system fonts */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans", "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(255,59,48,0.03), transparent 6%),
+        linear-gradient(180deg,var(--bg-0), #05060a 60%);
+      color:#e6eef6;
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      line-height:1.35;
+      padding-bottom:64px;
+    }
+
+    .app{
+      max-width:var(--max-width);
+      margin:28px auto;
+      padding:20px;
+    }
+
+    /* Top bar - compact game-site style */
+    header.topbar{
+      position:sticky;
+      top:12px;
+      margin:0 20px 20px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius: 12px;
+      box-shadow: var(--shadow-dark);
+      display:flex;
+      align-items:center;
+      gap:14px;
+      padding:12px 16px;
+      z-index:50;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .brand{display:flex;gap:12px;align-items:center}
+    .logo{
+      width:44px;height:44px;border-radius:10px;
+      background: linear-gradient(180deg,#111417,#171a1e);
+      display:grid;place-items:center;
+      box-shadow: 0 4px 18px rgba(0,0,0,0.6);
+      border:1px solid rgba(255,255,255,0.02);
+      flex:0 0 44px;
+    }
+    .logo svg{width:28px;height:28px;filter:drop-shadow(0 6px 12px rgba(255,59,48,0.12))}
+    .title{display:flex;flex-direction:column;line-height:1}
+    .title .name{font-weight:800;font-size:15px;color:#fff}
+    .title .sub{font-size:12px;color:var(--muted)}
+
+    .top-actions{margin-left:auto;display:flex;gap:8px;align-items:center}
+    .btn{background:transparent;border:1px solid rgba(255,255,255,0.05);padding:8px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+    .cta{
+      background: linear-gradient(90deg,var(--accent),var(--accent-2));
+      color: #0b0b0b;border:none;padding:10px 14px;border-radius:12px;font-weight:800;
+      box-shadow: var(--glow);
+    }
+
+    /* Hero - strong action look */
+    .hero{
+      display:grid;
+      grid-template-columns: 1fr 480px;
+      gap:28px;
+      align-items:center;
+      margin:18px 20px 36px;
+    }
+    .hero h1{
+      margin:0 0 10px 0;
+      font-size:44px;
+      letter-spacing:-1px;
+      color: #ffffff;
+      text-shadow: 0 6px 30px rgba(0,0,0,0.6);
+    }
+    .hero p.lead{
+      margin:0 0 18px 0;
+      color:var(--muted);
+      font-size:16px;
+      max-width:66ch;
+    }
+    .hero .actions{display:flex;gap:12px;flex-wrap:wrap}
+    .download{
+      display:inline-flex;gap:10px;align-items:center;padding:12px 16px;border-radius:12px;background:transparent;border:1px solid rgba(255,255,255,0.06);font-weight:800;color:#fff;cursor:pointer;
+    }
+
+    /* Action mock card */
+    .mock{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:18px;
+      box-shadow: var(--shadow-dark);
+      padding:16px;
+      border:1px solid rgba(255,255,255,0.03);
+      overflow:hidden;
+    }
+    .mock .screen{
+      height:260px;
+      border-radius:12px;
+      background:
+        linear-gradient(180deg,#081018,#0b1216);
+      position:relative;
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,0.02);
+    }
+    .mock .screen .overlay{
+      position:absolute;inset:0;background:
+        linear-gradient(180deg, rgba(255,159,67,0.06), rgba(0,0,0,0.22));
+      pointer-events:none;
+    }
+    .mock .screen .badge{
+      position:absolute;left:16px;top:16px;background:linear-gradient(90deg,#ff4d3b,#ff9f43);padding:6px 10px;border-radius:8px;font-weight:800;color:#07060a;box-shadow:0 6px 20px rgba(255,59,48,0.12);
+    }
+    .mock .screen .center{
+      position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;color:#fff;
+    }
+    .mock .screen .center .big{font-size:18px;font-weight:800;letter-spacing:.6px}
+    .mock .screen .center .small{font-size:13px;color:var(--muted);margin-top:6px}
+
+    /* Content sections */
+    section{margin: 20px;padding:18px}
+    .grid{display:grid;gap:18px}
+    .features.grid{grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));}
+
+    .card{
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border-radius:12px;padding:14px;border:1px solid rgba(255,255,255,0.03);
+      box-shadow: 0 8px 26px rgba(0,0,0,0.5);
+      transform:translateY(18px);opacity:0;
+      transition: transform .6s cubic-bezier(.2,.9,.22,1), opacity .6s ease, box-shadow .3s ease;
+    }
+    .card.in-view{transform:none;opacity:1}
+    .card:hover{box-shadow: 0 18px 60px rgba(0,0,0,0.6);transform:translateY(-4px) scale(1.01)}
+
+    .card h3{margin:0 0 8px 0;font-size:16px;color:#fff}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* Steps */
+    .steps{display:flex;flex-direction:column;gap:12px;max-width:760px}
+    .step{
+      display:flex;gap:12px;align-items:flex-start;padding:12px;border-radius:12px;
+      background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
+      border:1px solid rgba(255,255,255,0.025);
+      box-shadow:0 6px 24px rgba(0,0,0,0.45);
+      transform:translateY(18px);opacity:0;
+      transition: transform .6s cubic-bezier(.2,.9,.22,1), opacity .6s ease;
+    }
+    .step.in-view{transform:none;opacity:1}
+    .step .num{
+      width:44px;height:44px;border-radius:10px;background:linear-gradient(90deg,#1b1f22,#101214);color:var(--accent);font-weight:900;display:grid;place-items:center;font-size:18px;border:1px solid rgba(255,255,255,0.03)
+    }
+
+    .reveal[data-delay]{transition-delay: var(--delay, 0ms);}
+
+    footer{text-align:center;padding:28px 20px;color:var(--muted);font-size:13px}
+
+    @media (max-width:980px){
+      .hero{grid-template-columns:1fr; padding:0}
+      header.topbar{top:8px;margin:0 12px 14px}
+      .app{margin:10px auto;padding:10px}
+      .mock .screen{height:180px}
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      *{transition:none !important; animation:none !important}
+    }
+
+    /* small cinematic underline */
+    .underline{
+      display:inline-block;height:6px;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--accent-2));width:120px;box-shadow:0 10px 30px rgba(255,59,48,0.08);margin-top:8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="app" role="main">
+    <header class="topbar" aria-label="Synth Studio top bar">
+      <div class="brand">
+        <div class="logo" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="2" y="5" width="20" height="14" rx="3" fill="#ff3b30" opacity="0.12"/>
+            <rect x="3.5" y="7" width="17" height="10" rx="1.8" fill="#ff4d3b"/>
+            <rect x="6" y="10" width="2.6" height="5" rx="0.5" fill="#0b0b0b"/>
+            <rect x="9" y="10" width="2.6" height="5" rx="0.5" fill="#0b0b0b"/>
+            <rect x="12" y="10" width="2.6" height="5" rx="0.5" fill="#0b0b0b"/>
+          </svg>
+        </div>
+        <div class="title">
+          <div class="name">Synth Studio</div>
+          <div class="sub">Action Preview · Dark UI</div>
+        </div>
+      </div>
+
+      <div class="top-actions" role="navigation" aria-label="Top actions">
+        <button class="btn" aria-label="ข้อมูลเพิ่มเติม">About</button>
+        <button class="cta" aria-label="ดาวน์โหลด">Play Now</button>
+      </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" aria-label="Hero section">
+      <div class="panel">
+        <h1 class="reveal" data-delay="0">Synth Studio — Action Mode</h1>
+        <div class="underline reveal" data-delay="40" aria-hidden="true"></div>
+        <p class="lead reveal" data-delay="80">
+          เปลี่ยนโทนเป็นเทา-ดำ-ขาว เพิ่มพลังแบบเกม Action: คอนทราสต์สูง ตัวอักษรหนา และสี Accent แดง/ส้ม
+          เพื่อให้หน้าแนะนำเกมมีความตื่นเต้นและหนักแน่น ทั้งบนมือถือและเดสก์ท็อป
+        </p>
+
+        <div class="actions">
+          <button class="download reveal" data-delay="140" aria-label="ทดลองเล่น">
+            Launch Demo
+          </button>
+          <button class="btn reveal" data-delay="200" aria-label="ดูวิดีโอ">
+            Trailer
+          </button>
+        </div>
+      </div>
+
+      <div class="mock reveal" data-delay="300" role="img" aria-label="Game preview">
+        <div class="screen" aria-hidden="true">
+          <div class="badge">LIVE BETA</div>
+          <div class="center">
+            <div class="big">MISSION: SYNTH STRIKE</div>
+            <div class="small">Rhythm · Combat · Score</div>
+          </div>
+          <div class="overlay"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Features -->
+    <section class="features" aria-label="คุณสมบัติ">
+      <div class="grid features grid">
+        <article class="card reveal" data-delay="80" aria-labelledby="f1">
+          <h3 id="f1">โหมด Combat Rhythm</h3>
+          <div class="muted">ผสมจังหวะกับการต่อสู้ — กดให้แม่น ยิ่งคอมโบสูง ยิ่งแรง</div>
+        </article>
+
+        <article class="card reveal" data-delay="140" aria-labelledby="f2">
+          <h3 id="f2">UI แบบเกมหนักแน่น</h3>
+          <div class="muted">โทนมืด คอนทราสต์สูง และสี Accent ที่ให้ความรู้สึกตื่นเต้น</div>
+        </article>
+
+        <article class="card reveal" data-delay="200" aria-labelledby="f3">
+          <h3 id="f3">ระบบคะแนนแบบแข่งขัน</h3>
+          <div class="muted">Leaderboard, Time Trial และ Challenges รายวัน</div>
+        </article>
+
+        <article class="card reveal" data-delay="260" aria-labelledby="f4">
+          <h3 id="f4">แชร์ & สตรีม</h3>
+          <div class="muted">อัดคลิปและแชร์บนโซเชียล หรือสตรีมแบบสด</div>
+        </article>
+      </div>
+    </section>
+
+    <!-- How to play / Steps -->
+    <section aria-label="วิธีเล่น">
+      <h2 class="reveal" data-delay="80">เริ่มเล่นอย่างเร็ว</h2>
+      <div class="steps">
+        <div class="step reveal" data-delay="120" aria-label="ขั้นตอนที่ 1">
+          <div class="num">1</div>
+          <div>
+            <strong>Launch</strong>
+            <div class="muted">กด Launch Demo แล้วเลือก Mission — พร้อมระบบควบคุมแบบสัมผัสหรือคีย์บอร์ด.</div>
+          </div>
+        </div>
+
+        <div class="step reveal" data-delay="180" aria-label="ขั้นตอนที่ 2">
+          <div class="num">2</div>
+          <div>
+            <strong>Attack on Beat</strong>
+            <div class="muted">กดแอคชั่นให้ตรงจังหวะเพื่อสร้างความเสียหายและเพิ่มคอมโบ.</div>
+          </div>
+        </div>
+
+        <div class="step reveal" data-delay="240" aria-label="ขั้นตอนที่ 3">
+          <div class="num">3</div>
+          <div>
+            <strong>Survive & Rank Up</strong>
+            <div class="muted">สะสมคะแนน ปลดล็อกสกิล และไต่อันดับบน Leaderboard.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery / Screens -->
+    <section aria-label="ตัวอย่างหน้าจอ">
+      <h2 class="reveal" data-delay="100">ตัวอย่างหน้าจอ</h2>
+      <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;margin-top:12px">
+        <div class="card reveal" data-delay="140">
+          <div style="height:140px;border-radius:10px;background:linear-gradient(180deg,#081018,#071014);display:flex;align-items:center;justify-content:center;color:var(--muted)">
+            HUD — Combat Rhythm
+          </div>
+        </div>
+
+        <div class="card reveal" data-delay="200">
+          <div style="height:140px;border-radius:10px;background:linear-gradient(180deg,#0a1216,#061014);display:flex;align-items:center;justify-content:center;color:var(--muted)">
+            Mission Map
+          </div>
+        </div>
+
+        <div class="card reveal" data-delay="260">
+          <div style="height:140px;border-radius:10px;background:linear-gradient(180deg,#071018,#031014);display:flex;align-items:center;justify-content:center;color:var(--muted)">
+            Leaderboard & Replay
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      © Synth Studio — Action mode theme — Dark gray / black / white
+    </footer>
+  </div>
+
+  <script>
+    // Reveal on scroll with stagger (IntersectionObserver)
+    (function(){
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(prefersReduced) {
+        document.querySelectorAll('.reveal, .card, .step').forEach(el=>{
+          el.classList.add('in-view');
+          el.style.opacity = 1;
+          el.style.transform = 'none';
+        });
+        return;
+      }
+
+      const reveals = document.querySelectorAll('.reveal, .card, .step');
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry=>{
+          if(entry.isIntersecting){
+            const el = entry.target;
+            const d = parseInt(el.getAttribute('data-delay') || '0', 10);
+            el.style.setProperty('--delay', d + 'ms');
+            setTimeout(()=> {
+              el.classList.add('in-view');
+            }, d);
+            obs.unobserve(el);
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '0px 0px -8% 0px',
+        threshold: 0.12
+      });
+
+      reveals.forEach(el => observer.observe(el));
+    })();
+  </script>
+</body>
+</html>
